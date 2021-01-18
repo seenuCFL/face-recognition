@@ -12,7 +12,7 @@ import './App.css';
 
 //You must add your own API key here from Clarifai.
 const app = new Clarifai.App({
- apiKey: 'YOUR API KEY HERE'
+ apiKey: 'a7bbe7552f484608ac346ad188f4ccfe'
 });
 
 const particlesOptions = {
@@ -46,6 +46,8 @@ class App extends Component {
     }
   }
 
+
+  
   loadUser = (data) => {
     this.setState({user: {
       id: data.id,
@@ -93,7 +95,6 @@ class App extends Component {
         Clarifai.FACE_DETECT_MODEL,
         this.state.input)
       .then(response => {
-        console.log('hi', response)
         if (response) {
           fetch('http://localhost:3000/image', {
             method: 'put',
@@ -115,6 +116,8 @@ class App extends Component {
 
   onRouteChange = (route) => {
     if (route === 'signout') {
+      this.setState({input: ''})
+      this.setState({imageUrl: ''})
       this.setState({isSignedIn: false})
     } else if (route === 'home') {
       this.setState({isSignedIn: true})
@@ -144,7 +147,7 @@ class App extends Component {
               <FaceRecognition box={box} imageUrl={imageUrl} />
             </div>
           : (
-             route === 'signin'
+             route === 'signin' || route === 'signout'
              ? <Signin loadUser={this.loadUser} onRouteChange={this.onRouteChange}/>
              : <Register loadUser={this.loadUser} onRouteChange={this.onRouteChange}/>
             )
